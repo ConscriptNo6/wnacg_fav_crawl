@@ -30,7 +30,7 @@ sv2 = save2file.Save2Json('./example.json', dataframe)
 sv2.save()
 
 # 保存为CSV格式的文件
-sv3 = save2file.Save2CSV('./example.csv', dataframe)
+sv3 = save2file.Save2CSV('E:/PythonProject/wnacg_fav_crawl/example.csv', dataframe)
 sv3.save()
 ```
 ### 实例
