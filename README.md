@@ -1,47 +1,53 @@
 ## 绅士漫画收藏夹爬虫
 
-绅士漫画的收藏夹没有查重功能，索性直接将收藏夹中所有漫画的信息爬取下来，在数据库或表格等中实现查重等功能。
+绅士漫画的收藏夹没有查重功能，同一个漫画可以收藏多遍，索性直接将收藏夹中所有漫画的信息爬取下来，在数据库或表格等中实现查重等功能。
 
 ### 使用
-1. 安装依赖
-```
-pip install -r requirements.txt
-```
-2. 实例化一个爬虫对象，传入账号、密码、线程数(不填默认为10)、代理端口(不使用代理可不填)
-```python
-ded = fav_crawl.wnacg_dedu(account, password, threads, port)
-```
-3. 登录
-```python
-ded.login()
-```
-4. 获取收藏夹内所有漫画的信息，并转换成Pandas DataFrame格式
-```python
-df = ded.get_manga_info() 
-```
-5. 保存到本地文件
-```python
-# 保存到SQLite数据库
-sv1 = save2file.Save2DB('./example.db', dataframe)
-sv1.save()
-
-# 保存为JSON格式的文件
-sv2 = save2file.Save2Json('./example.json', dataframe)
-sv2.save()
-
-# 保存为CSV格式的文件
-sv3 = save2file.Save2CSV('E:/PythonProject/wnacg_fav_crawl/example.csv', dataframe)
-sv3.save()
-```
-### 实例
+- #### 初始化
+  1.克隆到本地
+  ```
+  git clone https://github.com/ConscriptNo6/wnacg_fav_crawl.git
+  ```
+  2.切换目录
+  ```
+  cd wnacg_fav_crawl
+  ```
+  3.安装依赖
+  ```
+  pip install -r requirements.txt
+  ```
+- #### 运行
 ```python
 import fav_crawl
 import save2file
+import duplicates
 
-ded = fav_crawl.wnacg_dedu('yajuusenpai', '114514', threads=20, port='10808')
-ded.login()
-df = ded.get_manga_info() 
+'''------------------必需------------------'''
 
-sv = save2file.Save2DB('./example.db', df)
-sv.save()
+# 实例化一个爬虫对象，并传入账号、密码、线程数、代理端口号
+fc = fav_crawl.FavCrawl('yajuusenpai', '114514', threads=20, port='7897')
+# 登录
+fc.login()
+
+# 获取所有收藏的漫画的信息
+manga_info_df = fc.get_full_manga_info() 
+
+'''------------------可选------------------'''
+
+# 1.对收藏的漫画进行查重
+md = duplicates.MangaDuplicate(manga_info_df)
+result = md.duplicates()
+print(result)
+
+# 2.保存到SQLite文件
+sv1 = save2file.Save2DB('./data_files/exemple.db', manga_info_df)
+sv1.save()
+
+# 3.保存到JSON文件
+sv2 = save2file.Save2Json('./data_files/exemple.json', manga_info_df)
+sv2.save()
+
+# 4.保存到CSV文件
+sv3 = save2file.Save2CSV('D:/Python Program/wnacg_fav_crawl/data_files/exemple.csv', manga_info_df)
+sv3.save()
 ```
