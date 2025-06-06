@@ -1,4 +1,3 @@
-# 保存到json文件时，斜杠前面都有一个反斜杠
 import sqlite3
 import os
 import sys
