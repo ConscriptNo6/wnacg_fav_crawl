@@ -36,7 +36,7 @@ manga_info_df = fc.get_full_manga_info()
 
 '''------------------可选------------------'''
 
-# 对收藏的漫画进行查重
+# 对收藏的漫画进行查重，输出重复收藏的漫画
 md = duplicates.MangaDuplicate(manga_info_df)
 result = md.duplicates()
 print(result)
