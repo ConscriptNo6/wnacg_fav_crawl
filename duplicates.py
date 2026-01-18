@@ -7,7 +7,11 @@ class MangaDuplicate:
         is_duplicate = self.manga_info_df.duplicated(['id'], keep=False)
         duplicates_df = self.manga_info_df[is_duplicate]
 
-        # 按传入的subset列排序
+        # 如果没有重复收藏的漫画就返回None
+        if duplicates_df.empty:
+            return None
+
+        # 按漫画ID排序
         sorted_df = duplicates_df.sort_values(by=['id'])
         
         return sorted_df
